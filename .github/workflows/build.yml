@@ -1,5 +1,6 @@
 name: "Build Debian Live Minimal ISO"
 
+on:
   push:
     paths-ignore:
       - 'README.md'
@@ -10,12 +11,12 @@ name: "Build Debian Live Minimal ISO"
 jobs:
   build-release:
     name: "Build and Release"
-    runs-on: "ubuntu-24.04.2"
+    runs-on: ubuntu-24.04
 
     steps:
       - name: "Get Date"
         run: |
-          echo "DATESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV 
+          echo "DATESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       - name: "Checking out git repository"
         uses: actions/checkout@v2
@@ -25,11 +26,11 @@ jobs:
           ./build.sh
 
       - name: "Publish"
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: false
-          automatic_release_tag: "${{ env.DATESTAMP }}"
+          automatic_release_tag: ${{ env.DATESTAMP }}
           title: "Debian 10 Live Minimal ISO"
           files: |
             output/debian10-live-minimal-x86_64.iso
